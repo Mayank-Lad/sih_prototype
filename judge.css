@@ -1,0 +1,41 @@
+/* Add your CSS styles here */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.panelname{
+    align-items: center;
+    position: relative;
+    margin: 0 auto;
+    padding-left: 20% ;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    max-height: 300px;
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+a {
+    text-decoration: none;
+    margin-right: 10px;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Conference</title>
+    <script src="https://webrtc.github.io/adapter/latest/adapter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <video id="localVideo" autoplay></video>
+    <video id="remoteVideo" autoplay></video>
+    <input type="text" v-model="roomId" placeholder="Enter Room ID">
+    <button @click="joinConference">Join Conference</button>
+</div>
+<script>
+    const app = new Vue({
+        el: "#app",
+        data: {
+            roomId: "",
+            localStream: null,
+            remoteStream: null,
+            peerConnection: null,
+        },
+        methods: {
+            async joinConference() {
+                const roomId = this.roomId;
+                const localVideo = document.getElementById("localVideo");
+                const remoteVideo = document.getElementById("remoteVideo");
+
+                try {
+                    // Get user media (camera and microphone)
+                    this.localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                    localVideo.srcObject = this.localStream;
+
+                    // Create a peer connection
+                    this.peerConnection = new RTCPeerConnection();
+
+                    // Add the local stream to the peer connection
+                    this.localStream.getTracks().forEach(track => this.peerConnection.addTrack(track, this.localStream));
+
+                    // Listen for incoming tracks
+                    this.peerConnection.ontrack = event => {
+                        this.remoteStream = event.streams[0];
+                        remoteVideo.srcObject = this.remoteStream;
+                    };
+
+                    // Connect to the signaling server, exchange SDP, and establish a connection
+                    // You need to implement the signaling server and SDP exchange logic here
+                    // This code assumes you have a signaling server that handles offers, answers, and ICE candidates.
+                    // It should look like:
+                    // 1. Exchange SDP offers/answers via your signaling server.
+                    // 2. Exchange ICE candidates via your signaling server.
+                    // 3. Set remote description and add ICE candidates received from the other peer.
+                    // 4. Handle the signaling server connection/disconnection.
+
+                } catch (error) {
+                    console.error("Error joining the conference:", error);
+                }
+            },
+        },
+    });
+</script>
+</body>
+</html>
